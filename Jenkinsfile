@@ -40,7 +40,7 @@ stage('JUNit Reports') {
                           echo "Publishing Jacoco Code Coverage Reports";
                     }
                      post {
-                                                 success {
+                                                 always {
                                                      jacoco(
                                                          execPattern: '**/target/*.exec',
                                                      )
