@@ -55,7 +55,7 @@ stage('JUNit Reports') {
                                 steps{
                                     script{
                                         sh 'docker build -t maher198/devops-project .'
-                                        
+
 
                                     }
                                 }
@@ -84,7 +84,7 @@ stage('JUNit Reports') {
                                 withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
                                     sh 'docker login -u maher198 -p ${dockerhubpwd}'
                                     sh 'docker push maher198/angular-app'
-            }
+            
         }
 
     }
