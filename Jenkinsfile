@@ -38,7 +38,7 @@ stage('JUNit Reports') {
                      steps {
                          script {
                              echo "Publishing Jacoco Code Coverage Reports"
-                             
+
                          }
                      }
                      post {
@@ -70,7 +70,7 @@ stage('JUNit Reports') {
         stage('Build Frontend') {
             steps {
                 // Checkout the Angular frontend repository
-                git branch: 'main',
+                git branch: 'master',
                 url: 'https://github.com/MaherHamdi/DevOps_Front'
                 sh 'npm install -g @angular/cli'
                 sh 'npm install'
