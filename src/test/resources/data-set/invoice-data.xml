@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dataset>
+    <invoice
+            amount_Discount="20"
+            ID_INVOICE="1"
+            amount_Invoice="100"
+            date_Creation_Invoice="2020-01-01"
+            date_Last_Modification_Invoice="2020-01-01"
+            archived="false"
+
+    />
+</dataset>

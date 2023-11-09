@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dataset>
+    <supplier
+            code="00000"
+            ID_SUPPLIER="1"
+            label="label 1"
+            supplier_category="ORDINAIRE"
+    />
+</dataset>
