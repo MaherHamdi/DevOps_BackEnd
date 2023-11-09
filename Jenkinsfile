@@ -47,14 +47,7 @@ stage('JUNit Reports') {
                                                  }
                                              }
                 }
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv(installationName:'sql') {
-                sh 'chmod +x ./mvnw'
-                    sh 'mvn package sonar:sonar'
-                }
-            }
-        }
+      
         stage('Build docker image'){
                                 steps{
                                     script{
