@@ -1,7 +1,7 @@
 pipeline {
 
     agent any
-tools { nodejs '19.9.0'}
+
     stages {
 
         stage('Checkout Backend Repo') {
@@ -47,7 +47,7 @@ stage('JUNit Reports') {
                                                  }
                                              }
                 }
-      
+
         stage('Build docker image'){
                                 steps{
                                     script{
