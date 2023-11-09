@@ -18,6 +18,7 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -40,5 +41,5 @@ public class Invoice implements Serializable {
     @JsonIgnore
     Supplier supplier;
 
-	
+
 }
