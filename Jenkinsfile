@@ -55,7 +55,7 @@ stage('JUNit Reports') {
                                 steps{
                                     script{
                                         sh 'docker build -t maher198/devops-project .'
-                                        sh 'docker build -t maher198/angular-app .'
+                                        
 
                                     }
                                 }
@@ -66,7 +66,7 @@ stage('JUNit Reports') {
                            withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
                               sh 'docker login -u maher198 -p ${dockerhubpwd}'
                               sh 'docker push maher198/devops-project'
-                              sh 'docker push maher198/angular-app'
+
                            }
                            }
                    }
@@ -79,6 +79,11 @@ stage('JUNit Reports') {
                 sh 'npm install -g @angular/cli'
                 sh 'npm install'
                 sh 'ng build --configuration=production'
+                 // Build and push Docker image for the frontend
+                                sh 'docker build -t maher198/angular-app -f path/to/frontend/Dockerfile .'
+                                withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                                    sh 'docker login -u maher198 -p ${dockerhubpwd}'
+                                    sh 'docker push maher198/angular-app'
             }
         }
 
