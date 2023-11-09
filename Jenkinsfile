@@ -35,18 +35,20 @@ stage('JUNit Reports') {
             }
         }
          stage('Jacoco Reports') {
-                    steps {
-
-                          echo "Publishing Jacoco Code Coverage Reports";
-                    }
+                     steps {
+                         script {
+                             echo "Publishing Jacoco Code Coverage Reports"
+                             
+                         }
+                     }
                      post {
-                                                 success {
-                                                     jacoco(
-                                                         execPattern: '**/target/*.exec',
-                                                     )
-                                                 }
-                                             }
-                }
+                         success {
+                             jacoco(
+                                 execPattern: '**/target/*.exec',
+                             )
+                         }
+                     }
+                 }
 
         stage('Build docker image'){
                                 steps{
