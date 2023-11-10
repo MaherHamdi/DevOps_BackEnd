@@ -71,6 +71,15 @@ stage('JUNit Reports') {
                            }
                    }
                    }
+                   stage('Deploy to Nexus') {
+                               steps {
+                                   script {
+                                       // Maven deploy to Nexus
+                                       withCredentials([usernamePassword(credentialsId: 'Nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                                           sh 'mvn deploy -Dmaven.test.skip=true -DaltDeploymentRepository=nexus::default::http://192.168.34.10:8081/repository/maven-releases/'
+                                       }
+                                   }
+                               }
         stage('Build Frontend') {
             steps {
                 // Checkout the Angular frontend repository
