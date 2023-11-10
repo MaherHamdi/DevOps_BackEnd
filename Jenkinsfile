@@ -55,9 +55,7 @@ stage('JUNit Reports') {
                                                 steps {
                                                     script {
                                                         // Maven deploy to Nexus
-                                                        withCredentials([usernamePassword(credentialsId: 'Nexus', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                                                            sh 'mvn deploy -Dmaven.test.skip=true -DaltDeploymentRepository=nexus::default::http://192.168.34.10:8081/repository/maven-releases/'
-                                                        }
+                                                        sh 'mvn deploy'
                                                     }
                                                     }
                                                 }
