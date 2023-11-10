@@ -5,10 +5,11 @@ pipeline {
 
     stages {
 
-        stage('Checkout Backend Repo') {
+        stage('GIT') {
             steps {
-               checkout scm
-            }
+                         git branch: 'master',
+                         url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
+                       }
         }
   stage('Unit Tests') {
             steps {
