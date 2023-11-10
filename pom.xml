@@ -170,4 +170,11 @@
         </pluginManagement>
         <finalName>devops-project</finalName>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <url>http://192.168.34.10:8081/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
+
 </project>
