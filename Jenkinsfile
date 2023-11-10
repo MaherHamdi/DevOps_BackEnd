@@ -98,5 +98,12 @@ stage('JUNit Reports') {
         }
 
     }
+      stage('docker-compose  backend'){
+                                                    steps{
+                                                     script{
+                                                       sh 'docker compose up -d'
+                                                        }
+                                                          }
+                                                          }
  }
  }
