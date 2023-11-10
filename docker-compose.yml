@@ -1,0 +1,44 @@
+version: "3"
+services:
+  springboot-app:
+    container_name: devops-project
+    image: maher198/devops-project
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+    networks:
+      - dev-net
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    volumes:
+      - ./my-datavolume:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: devops
+      MYSQL_ROOT_PASSWORD: root
+
+
+  frontend:
+    image: maher198/angular-app:latest
+    container_name: angular
+    volumes: # Volume binding
+      - './angulardockerproject:/usr/src/app'
+    command: >
+      bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
+    ports:
+      - 4200:4200
+    restart: unless-stopped
+    depends_on:
+      - springboot-app
+    networks:
+      - dev-net
+
+networks:
+  dev-net:
