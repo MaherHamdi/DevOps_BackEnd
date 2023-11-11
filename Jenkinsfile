@@ -24,11 +24,24 @@ pipeline {
             }
             }
         }
-        stage('build') {
-            steps {
-                sh 'mvn package'
-            }
-        }
+       stage('build') {
+                   steps {
+                       sh 'mvn package'
+                   }
+                   post {
+                     success {
+                     emailext subject: 'Jenkins build Success',
+                     body: 'The Jenkins build  has succeeded. Build URL: ${BUILD_URL}',
+                      to: '$DEFAULT_RECIPIENTS'
+                               }
+
+                      failure {
+                      emailext subject: 'Jenkins build Failure',
+                      body: 'The Jenkins build has failed. Build URL: ${BUILD_URL}',
+                      to: '$DEFAULT_RECIPIENTS'
+                                }
+                         }
+               }
 
 stage('JUNit Reports') {
             steps {
@@ -106,4 +119,17 @@ stage('JUNit Reports') {
                                                           }
                                                           }
  }
+ post {
+      success {
+       emailext subject: 'Jenkins build Success',
+       body: 'The Jenkins build  has succeeded. Build URL: ${BUILD_URL}',
+       to: '$DEFAULT_RECIPIENTS'
+        }
+
+        failure {
+        emailext subject: 'Jenkins build Failure',
+        body: 'The Jenkins build has failed. Build URL: ${BUILD_URL}',
+         to: '$DEFAULT_RECIPIENTS'
+                             }
+                         }
  }
