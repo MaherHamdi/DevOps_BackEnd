@@ -11,6 +11,13 @@ pipeline {
                          url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
                        }
         }
+stage('Debug') {
+    steps {
+        script {
+            echo "Jenkins Workspace: ${env.WORKSPACE}"
+        }
+    }
+}
 
   stage('Unit Tests') {
             steps {
