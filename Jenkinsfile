@@ -133,14 +133,7 @@ pipeline {
             }
         }
 
-   stage('docker-compose backend') {
-       steps {
-           script {
-               def workspacePath = env.WORKSPACE
-               sh "cd $workspacePath && docker compose -f docker-compose.yml up -d"
-           }
-       }
-   }
+
 }
 
         post {
