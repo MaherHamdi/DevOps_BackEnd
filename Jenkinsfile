@@ -11,6 +11,14 @@ pipeline {
                 url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
             }
         }
+        stage('Debug') {
+            steps {
+                script {
+                    def workspacePath = env.WORKSPACE
+                    sh "cd $workspacePath && ls -l"
+                }
+            }
+        }
 
         stage('Unit Tests') {
             steps {
