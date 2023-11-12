@@ -123,7 +123,9 @@ stage('JUNit Reports') {
       stage('docker-compose  backend'){
                                                     steps{
                                                      script{
+                                                     dir ("${workspace}"){
                                                        sh 'docker compose up -d'
+                                                        }
                                                         }
                                                           }
                                                           }
