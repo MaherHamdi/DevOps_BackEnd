@@ -11,11 +11,7 @@ pipeline {
                          url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
                        }
         }
-        stage('Check Docker Compose Version') {
-            steps {
-                sh 'docker compose version'
-            }
-        }
+      
   stage('Unit Tests') {
             steps {
                 script {
@@ -119,7 +115,7 @@ stage('JUNit Reports') {
       stage('docker-compose  backend'){
                                                     steps{
                                                      script{
-                                                       sh 'docker-compose up -d'
+                                                       sh 'docker compose up -d'
                                                         }
                                                           }
                                                           }
