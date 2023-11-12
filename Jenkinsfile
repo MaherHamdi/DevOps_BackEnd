@@ -11,13 +11,7 @@ pipeline {
                          url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
                        }
         }
-stage('Debug') {
-    steps {
-        script {
-            echo "Jenkins Workspace: ${env.WORKSPACE}"
-        }
-    }
-}
+
 
   stage('Unit Tests') {
             steps {
@@ -127,16 +121,15 @@ stage('JUNit Reports') {
         }
 
     }
-      stage('docker-compose  backend'){
-                                                    steps{
-                                                     script{
-                                                     dir ("${workspace}"){
-                                                       sh 'docker compose up -d'
-                                                        }
-                                                        }
-                                                          }
-                                                          }
- }
+   stage('Docker Compose Up') {
+         steps {
+             script {
+                 def workspacePath = env.WORKSPACE
+                 sh "cd $workspacePath && docker-compose up -d"
+             }
+         }
+     }
+
  post {
       success {
        emailext subject: 'Jenkins build Success',
