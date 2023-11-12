@@ -121,15 +121,14 @@ stage('JUNit Reports') {
         }
 
     }
-   stage('Docker Compose Up') {
-         steps {
-             script {
-                 def workspacePath = env.WORKSPACE
-                 sh "cd $workspacePath && docker-compose up -d"
-             }
-         }
-     }
-
+      stage('docker-compose  backend'){
+                                                    steps {
+                                                               script {
+                                                                   def workspacePath = env.WORKSPACE
+                                                                   sh "cd $workspacePath && docker-compose up -d"
+                                                               }
+                                                           }
+ }
  post {
       success {
        emailext subject: 'Jenkins build Success',
@@ -144,4 +143,3 @@ stage('JUNit Reports') {
                              }
                          }
  }
-}
