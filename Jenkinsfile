@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Check Docker Compose Version') {
             steps {
-                sh 'docker-compose --version'
+                sh '/usr/bin/docker/docker-compose --version'
             }
         }
   stage('Unit Tests') {
