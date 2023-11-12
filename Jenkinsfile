@@ -67,7 +67,7 @@ stage('JUNit Reports') {
                  }
                   stage('SonarQube Analysis') {
                              steps {
-                                 withSonarQubeEnv(installationName:'sql') {
+                                 withSonarQubeEnv(installationName:'Sonarqube') {
                                  sh 'chmod +x ./mvnw'
                                      sh 'mvn package sonar:sonar'
                                  }
