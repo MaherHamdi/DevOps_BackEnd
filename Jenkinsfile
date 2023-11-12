@@ -11,7 +11,7 @@ pipeline {
                          url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
                        }
         }
-      
+
   stage('Unit Tests') {
             steps {
                 script {
@@ -65,6 +65,14 @@ stage('JUNit Reports') {
                          }
                      }
                  }
+                  stage('SonarQube Analysis') {
+                             steps {
+                                 withSonarQubeEnv(installationName:'sql') {
+                                 sh 'chmod +x ./mvnw'
+                                     sh 'mvn package sonar:sonar'
+                                 }
+                             }
+                         }
                    stage('Deploy to Nexus') {
                                                 steps {
                                                     script {
