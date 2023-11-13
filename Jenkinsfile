@@ -11,22 +11,7 @@ pipeline {
                 url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
             }
         }
-        stage('Debug') {
-            steps {
-                script {
-                    def workspacePath = env.WORKSPACE
-                    sh "cd $workspacePath && ls -l"
-                }
-            }
-        }
-           stage('docker-compose backend') {
-               steps {
-                   script {
-                       def workspacePath = env.WORKSPACE
-                       sh "cd $workspacePath && docker compose -f docker-compose.yml up -d"
-                   }
-               }
-           }
+
 
         stage('Unit Tests') {
             steps {
@@ -83,7 +68,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv(installationName:'Sonarqube') {
+                withSonarQubeEnv(installationName:'Sonar') {
                     sh 'chmod +x ./mvnw'
                     sh 'mvn package sonar:sonar'
                 }
@@ -132,6 +117,14 @@ pipeline {
                 }
             }
         }
+           stage('docker-compose backend') {
+                       steps {
+                           script {
+                               def workspacePath = env.WORKSPACE
+                               sh "cd $workspacePath && docker compose -f docker-compose.yml up -d"
+                           }
+                       }
+                   }
 
 
 }
