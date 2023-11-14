@@ -32,8 +32,10 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 script {
+                dir('/var/lib/jenkins/workspace/DevOps_BackEnd'){
                 sh 'mvn package'
                     sh 'mvn test'
+                    }
                 }
             }
             post {
