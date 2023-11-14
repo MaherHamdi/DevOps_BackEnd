@@ -117,17 +117,7 @@ pipeline {
                         }
                     }
                 }
-          stage('Build Frontend') {
-                    steps {
-                        git branch: 'master',
-                        url: 'https://github.com/MaherHamdi/DevOps_Front'
-                        sh 'npm install -g @angular/cli'
-                        sh 'npm install'
-                        sh 'ng build --configuration=production'
-                        sh 'docker build -t maher198/angular-app -f Dockerfile .'
-
-                    }
-                }
+        
                 stage('Docker Login') {
                             steps {
                                 withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
