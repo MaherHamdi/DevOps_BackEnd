@@ -111,6 +111,7 @@ stage('JUNit Reports') {
                                                                                      }
                                                                                   }
                                                                                 }
+                                                                                }
 
 
         /* stage('Push image to Hub'){
@@ -138,5 +139,4 @@ stage('JUNit Reports') {
         to: '$DEFAULT_RECIPIENTS'
                             }
                         }
- }
  }
