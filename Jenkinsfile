@@ -17,7 +17,7 @@ tools { nodejs '19.9.0'}
                                          }
                                          }
                                       }
-                                  }
+
         stage('build') {
             steps {
                 sh 'mvn package'
@@ -116,13 +116,7 @@ stage('JUNit Reports') {
                        }
                     }
                   }
-                   stage('docker-compose  backend'){
-                     steps{
-                         script{
-                             sh 'docker compose up --build -d'
-                                 }
-                                 }
-                              }
+                   
                           }
     post {
      success {
