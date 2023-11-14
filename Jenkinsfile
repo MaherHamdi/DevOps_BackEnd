@@ -10,6 +10,17 @@ pipeline {
                 git branch: 'master',
                 url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
             }
+               stage('Build Frontend') {
+                        steps {
+                            git branch: 'master',
+                            url: 'https://github.com/MaherHamdi/DevOps_Front'
+                            sh 'npm install -g @angular/cli'
+                            sh 'npm install'
+                            sh 'ng build --configuration=production'
+                            sh 'docker build -t maher198/angular-app -f Dockerfile .'
+                            sh 'ls -al /var/lib/jenkins/workspace/DevOps'
+                        }
+                    }
         }
 
 
