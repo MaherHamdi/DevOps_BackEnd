@@ -10,6 +10,7 @@ pipeline {
                 git branch: 'master',
                 url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
             }
+            }
                stage('Build Frontend') {
                         steps {
                             git branch: 'master',
