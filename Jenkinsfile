@@ -124,6 +124,8 @@ pipeline {
         stage('docker-compose backend') {
                                                                  steps {
                                                                      script {
+                                                                     git branch: 'master',
+                                                                     url: 'https://github.com/MaherHamdi/DevOps_Front'
 
                                                                          sh "docker compose up -d"
                                                                      }
