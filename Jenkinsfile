@@ -2,6 +2,9 @@ pipeline {
 
     agent any
 tools { nodejs '19.9.0'}
+environment {
+                HOME = "${env.WORKSPACE}"
+            }
     stages {
 
         stage('Checkout Backend Repo') {
@@ -10,7 +13,7 @@ tools { nodejs '19.9.0'}
               url: 'https://github.com/MaherHamdi/DevOps_BackEnd.git'
             }
         }
-        
+
         stage('build') {
             steps {
                 sh 'mvn package'
