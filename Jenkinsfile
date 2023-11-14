@@ -84,8 +84,8 @@ stage('JUNit Reports') {
               steps{
                    script{
                            withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                              sh 'docker login -u mtar -p ${dockerhubpwd}'
-                              sh 'docker push mtar/devops-project'
+                              sh 'docker login -u maher198 -p ${dockerhubpwd}'
+                              sh 'docker push maher198/devops-project'
                            }
                            }
                    }
@@ -100,7 +100,7 @@ stage('JUNit Reports') {
                            sh 'ng build --configuration=production'
                             // Build and push Docker image for the frontend
                             script{
-                             sh 'docker build -t maher198/angular-app -f Dockerfile .'
+                             sh 'sudo docker build -t maher198/angular-app -f Dockerfile .'
                               withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
                               sh 'docker login -u maher198 -p ${dockerhubpwd}'
                               sh 'docker push maher198/angular-app'
