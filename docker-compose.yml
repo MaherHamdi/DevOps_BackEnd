@@ -22,7 +22,7 @@ services:
     environment:
       MYSQL_DATABASE: devops
       MYSQL_ROOT_PASSWORD: root
-    user: "1000:1000"
+    
 
 
 
