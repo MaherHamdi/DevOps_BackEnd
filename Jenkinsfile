@@ -124,8 +124,8 @@ pipeline {
         stage('docker-compose backend') {
                                                                  steps {
                                                                      script {
-                                                                     git branch: 'master',
-                                                                     url: 'https://github.com/MaherHamdi/DevOps_Front'
+                                                                     def currentPath = sh(script: 'pwd', returnStdout: true).trim()
+                                                                                             echo "Current Path (before docker-compose): ${currentPath}"
 
                                                                          sh "docker compose up -d"
                                                                      }
