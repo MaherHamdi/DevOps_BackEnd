@@ -92,6 +92,7 @@ stage('JUNit Reports') {
                                                              }
                                                           }
                                                       }
+                                                      }
                                                        stage('Build & Push Frontend') {
                                                                       agent any
                                                                           steps {
