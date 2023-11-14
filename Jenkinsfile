@@ -87,6 +87,24 @@ pipeline {
                 }
             }
         }
+        stage('Build BackEnd') {
+                    steps {
+                        script {
+                            sh 'docker build -t maher198/devops-project .'
+                        }
+                    }
+                }
+
+                stage('Push image to Hub') {
+                    steps {
+                        script {
+                            withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                                sh 'docker login -u maher198 -p ${dockerhubpwd}'
+                                sh 'docker push maher198/devops-project'
+                            }
+                        }
+                    }
+                }
           stage('Build Frontend') {
                     steps {
                         git branch: 'master',
@@ -95,32 +113,20 @@ pipeline {
                         sh 'npm install'
                         sh 'ng build --configuration=production'
                         sh 'docker build -t maher198/angular-app -f Dockerfile .'
-                        withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                            sh 'docker login -u maher198 -p ${dockerhubpwd}'
-                            sh 'ls -al /var/lib/jenkins/workspace/DevOps/docker-compose.yml'
-                           sh "docker compose up -d"
+                        
+                    }
+                }
+                stage('Docker Login') {
+                            steps {
+                                withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                                    sh "docker login -u maher198 -p ${dockerhubpwd}"
+                                }
+                            }
                         }
-                    }
-                }
 
-        stage('Build BackEnd') {
-            steps {
-                script {
-                    sh 'docker build -t maher198/devops-project .'
-                }
-            }
-        }
 
-        stage('Push image to Hub') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                        sh 'docker login -u maher198 -p ${dockerhubpwd}'
-                        sh 'docker push maher198/devops-project'
-                    }
-                }
-            }
-        }
+
+
 
 
         stage('docker-compose backend') {
