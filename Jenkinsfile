@@ -1,166 +1,132 @@
 pipeline {
+
     agent any
-    tools {
-        nodejs '19.9.0'
-    }
-
+tools { nodejs '19.9.0'}
     stages {
-        stage('GIT') {
+
+        stage('Checkout Backend Repo') {
             steps {
-                git branch: 'master',
-                url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
-            }
-            }
-               stage('Build Frontend') {
-                        steps {
-                            git branch: 'master',
-                            url: 'https://github.com/MaherHamdi/DevOps_Front'
-                            sh 'npm install -g @angular/cli'
-                            sh 'npm install'
-                            sh 'ng build --configuration=production'
-                            sh 'docker build -t maher198/angular-app -f Dockerfile .'
-                            sh 'ls -al /var/lib/jenkins/workspace/DevOps'
-                        }
-                    }
-
-
-
-
-
-
-
-        stage('Unit Tests') {
-            steps {
-                script {
-                dir('/var/lib/jenkins/workspace/DevOps_BackEnd'){
-                sh 'mvn package'
-                    sh 'mvn test'
-                    }
-                }
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
+              git branch: 'master',
+              url: 'https://github.com/MaherHamdi/DevOps_BackEnd.git'
             }
         }
-
         stage('build') {
             steps {
                 sh 'mvn package'
             }
             post {
-                success {
-                    emailext subject: 'Jenkins build Success',
-                    body: 'The Jenkins build has succeeded. Build URL: ${BUILD_URL}',
-                    to: '$DEFAULT_RECIPIENTS'
-                }
-                failure {
-                    emailext subject: 'Jenkins build Failure',
-                    body: 'The Jenkins build has failed. Build URL: ${BUILD_URL}',
-                    to: '$DEFAULT_RECIPIENTS'
-                }
-            }
-        }
+              success {
+              emailext subject: 'Jenkins build Success',
+              body: 'The Jenkins build  has succeeded. Build URL: ${BUILD_URL}',
+               to: '$DEFAULT_RECIPIENTS'
+                        }
 
-        stage('JUNit') {
-            steps {
-                junit '**/target/surefire-reports/*.xml'
-                echo "Publishing JUnit reports"
-            }
+               failure {
+               emailext subject: 'Jenkins build Failure',
+               body: 'The Jenkins build has failed. Build URL: ${BUILD_URL}',
+               to: '$DEFAULT_RECIPIENTS'
+                         }
+                  }
         }
-
-        stage('Jacoco Reports') {
+ stage('Unit Tests') {
             steps {
                 script {
-                    echo "Publishing Jacoco Code Coverage Reports"
+                    sh 'mvn test'
                 }
             }
-            post {
-                success {
-                    jacoco(
-                        execPattern: '**/target/*.exec',
-                    )
-                }
+            post{
+            always{
+            junit '**/target/surefire-reports/TEST-*.xml'
+            }
             }
         }
+stage('JUNit Reports') {
+            steps {
+                    junit '**/target/surefire-reports/*.xml'
+		                echo "Publishing JUnit reports"
+            }
+        }
+         stage('Jacoco Reports') {
+                    steps {
 
+                          echo "Publishing Jacoco Code Coverage Reports";
+                    }
+                     post {
+                           success {
+                                   jacoco(
+                                          execPattern: '**/target/*.exec',
+                                          )
+                                   }
+                           }
+                }
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv(installationName:'Sonar') {
-                    sh 'chmod +x ./mvnw'
+                sh 'chmod +x ./mvnw'
                     sh 'mvn package sonar:sonar'
                 }
             }
         }
+        stage('Build & Push backend image'){
+                                steps{
+                                    script{
 
-        stage('Deploy to Nexus') {
-            steps {
-                script {
-                    // Maven deploy to Nexus
-                    sh 'mvn deploy'
-                }
-            }
-        }
-        stage('Build BackEnd') {
-                    steps {
-                        script {
-                            sh 'docker build -t maher198/devops-project .'
-                        }
-                    }
-                }
-
-                stage('Push image to Hub') {
-                    steps {
-                        script {
-                            withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                                sh 'docker login -u maher198 -p ${dockerhubpwd}'
-                                sh 'docker push maher198/devops-project'
-                            }
-                        }
-                    }
-                }
-
-                stage('Docker Login') {
-                            steps {
-                                withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                                    sh 'docker login -u maher198 -p ${dockerhubpwd}'
+                                        sh 'docker build -t maher198/devops-project .'
+                                          withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                                                                      sh 'docker login -u maher198 -p ${dockerhubpwd}'
+                                                                      sh 'docker push maher198/devops-project'
+                                                                   }
+                                    }
                                 }
                             }
+
+        /* stage('Push image to Hub'){
+              steps{
+                   script{
+                           withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                              sh 'docker login -u mtar -p ${dockerhubpwd}'
+                              sh 'docker push mtar/devops-project'
+                           }
+                           }
+                   }
+                   } */
+        stage('Build & Push Frontend') {
+        agent any
+            steps {
+                git branch: 'master',
+                           url: 'https://github.com/MaherHamdi/DevOps_Front.git'
+                           sh 'npm install -g @angular/cli'
+                           sh 'npm install'
+                           sh 'ng build --configuration=production'
+                            // Build and push Docker image for the frontend
+                            script{
+                             sh 'docker build -t maher198/angular-app -f Dockerfile .'
+                              withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                              sh 'docker login -u maher198 -p ${dockerhubpwd}'
+                              sh 'docker push maher198/angular-app'
+                              }
+                       }
+                    }
+                  }
+                   stage('docker-compose  backend'){
+                     steps{
+                         script{
+                             sh 'docker compose up --build -d'
+                                 }
+                                 }
+                              }
+                          }
+    post {
+     success {
+      emailext subject: 'Jenkins build Success',
+      body: 'The Jenkins build  has succeeded. Build URL: ${BUILD_URL}',
+      to: '$DEFAULT_RECIPIENTS'
+       }
+
+       failure {
+       emailext subject: 'Jenkins build Failure',
+       body: 'The Jenkins build has failed. Build URL: ${BUILD_URL}',
+        to: '$DEFAULT_RECIPIENTS'
+                            }
                         }
-
-
-
-
-
-
-        stage('docker-compose backend') {
-                                                                 steps {
-                                                                     script {
-                                                                     sh 'ls -al /var/lib/jenkins/workspace/DevOps/docker-compose.yml'
-
-                                                                         sh "docker compose up -d"
-                                                                     }
-                                                                 }
-                                                             }
-
-
-
-
-}
-
-        post {
-            success {
-                emailext subject: 'Jenkins build Success',
-                body: 'The Jenkins build has succeeded. Build URL: ${BUILD_URL}',
-                to: '$DEFAULT_RECIPIENTS'
-            }
-
-            failure {
-                emailext subject: 'Jenkins build Failure',
-                body: 'The Jenkins build has failed. Build URL: ${BUILD_URL}',
-                to: '$DEFAULT_RECIPIENTS'
-            }
-        }
-    }
-
+ }
