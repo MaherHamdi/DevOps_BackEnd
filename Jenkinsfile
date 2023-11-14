@@ -17,6 +17,7 @@ pipeline {
                     sh 'ls -al /var/lib/jenkins/workspace/DevOps/docker-compose.yml'
                 }
             }
+            }
 
 
 
