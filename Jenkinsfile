@@ -32,6 +32,7 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 script {
+                sh 'mvn package'
                     sh 'mvn test'
                 }
             }
@@ -117,7 +118,7 @@ pipeline {
                         }
                     }
                 }
-        
+
                 stage('Docker Login') {
                             steps {
                                 withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
