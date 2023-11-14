@@ -111,6 +111,7 @@ stage('JUNit Reports') {
                                                                                      }
                                                                                   }
                                                                                 }
+                                                                                }
 
         /* stage('Push image to Hub'){
               steps{
