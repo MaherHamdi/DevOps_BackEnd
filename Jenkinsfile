@@ -11,14 +11,7 @@ pipeline {
                 url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
             }
         }
-          stage('docker-compose backend') {
-                                                         steps {
-                                                             script {
 
-                                                                 sh "docker compose up -d"
-                                                             }
-                                                         }
-                                                     }
 
 
 
@@ -93,8 +86,22 @@ pipeline {
                 }
             }
         }
+          stage('Build Frontend') {
+                    steps {
+                        git branch: 'master',
+                        url: 'https://github.com/MaherHamdi/DevOps_Front'
+                        sh 'npm install -g @angular/cli'
+                        sh 'npm install'
+                        sh 'ng build --configuration=production'
+                        sh 'docker build -t maher198/angular-app -f Dockerfile .'
+                        withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                            sh 'docker login -u maher198 -p ${dockerhubpwd}'
+                            sh 'docker push maher198/angular-app'
+                        }
+                    }
+                }
 
-        stage('Build docker image') {
+        stage('Build BackEnd') {
             steps {
                 script {
                     sh 'docker build -t maher198/devops-project .'
@@ -113,20 +120,15 @@ pipeline {
             }
         }
 
-        stage('Build Frontend') {
-            steps {
-                git branch: 'master',
-                url: 'https://github.com/MaherHamdi/DevOps_Front'
-                sh 'npm install -g @angular/cli'
-                sh 'npm install'
-                sh 'ng build --configuration=production'
-                sh 'docker build -t maher198/angular-app -f Dockerfile .'
-                withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                    sh 'docker login -u maher198 -p ${dockerhubpwd}'
-                    sh 'docker push maher198/angular-app'
-                }
-            }
-        }
+
+        stage('docker-compose backend') {
+                                                                 steps {
+                                                                     script {
+
+                                                                         sh "docker compose up -d"
+                                                                     }
+                                                                 }
+                                                             }
 
 
 
