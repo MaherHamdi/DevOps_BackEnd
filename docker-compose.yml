@@ -16,8 +16,7 @@ services:
   mysqldb:
     container_name: mysqldb
     image: mysql
-    volumes:
-      - ./my-datavolume:/var/lib/mysql
+
     ports:
       - 3306:3306
     environment:
@@ -26,20 +25,7 @@ services:
     user: "1000:1000"
 
 
-  frontend:
-    image: maher198/angular-app:latest
-    container_name: angular
-    volumes: # Volume binding
-      - './angulardockerproject:/usr/src/app'
-    command: >
-      bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
-    ports:
-      - 4200:4200
-    restart: unless-stopped
-    depends_on:
-      - springboot-app
-    networks:
-      - dev-net
+
 
 networks:
   dev-net:

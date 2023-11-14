@@ -71,24 +71,7 @@ stage('JUNit Reports') {
                 }
             }
         }
-         stage('Build & Push Frontend') {
-                agent any
-                    steps {
-                        git branch: 'master',
-                                   url: 'https://github.com/MaherHamdi/DevOps_Front.git'
-                                   sh 'npm install -g @angular/cli'
-                                   sh 'npm install'
-                                   sh 'ng build --configuration=production'
-                                    // Build and push Docker image for the frontend
-                                    script{
-                                     sh 'docker build -t maher198/angular-app -f Dockerfile .'
-                                      withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                                      sh 'docker login -u maher198 -p ${dockerhubpwd}'
-                                      sh 'docker push maher198/angular-app'
-                                      }
-                               }
-                            }
-                          }
+
         stage('Build & Push backend image'){
                                 steps{
                                     script{
@@ -101,6 +84,32 @@ stage('JUNit Reports') {
                                     }
                                 }
                             }
+                             stage('docker-compose  backend'){
+                                                 steps{
+                                                     script{
+                                                         sh 'docker compose up --build -d'
+                                                             }
+                                                             }
+                                                          }
+                                                      }
+                                                       stage('Build & Push Frontend') {
+                                                                      agent any
+                                                                          steps {
+                                                                              git branch: 'master',
+                                                                                         url: 'https://github.com/MaherHamdi/DevOps_Front.git'
+                                                                                         sh 'npm install -g @angular/cli'
+                                                                                         sh 'npm install'
+                                                                                         sh 'ng build --configuration=production'
+                                                                                          // Build and push Docker image for the frontend
+                                                                                          script{
+                                                                                           sh 'docker build -t maher198/angular-app -f Dockerfile .'
+                                                                                            withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                                                                                            sh 'docker login -u maher198 -p ${dockerhubpwd}'
+                                                                                            sh 'docker push maher198/angular-app'
+                                                                                            }
+                                                                                     }
+                                                                                  }
+                                                                                }
 
         /* stage('Push image to Hub'){
               steps{
@@ -113,14 +122,7 @@ stage('JUNit Reports') {
                    }
                    } */
 
-                   stage('docker-compose  backend'){
-                     steps{
-                         script{
-                             sh 'docker compose up --build -d'
-                                 }
-                                 }
-                              }
-                          }
+
     post {
      success {
       emailext subject: 'Jenkins build Success',
