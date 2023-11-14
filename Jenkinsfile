@@ -13,6 +13,24 @@ environment {
               url: 'https://github.com/MaherHamdi/DevOps_BackEnd.git'
             }
         }
+         stage('Build & Push Frontend') {
+                                                                              agent any
+                                                                                  steps {
+                                                                                      git branch: 'master',
+                                                                                                 url: 'https://github.com/MaherHamdi/DevOps_Front.git'
+                                                                                                 sh 'npm install -g @angular/cli'
+                                                                                                 sh 'npm install'
+                                                                                                 sh 'ng build --configuration=production'
+                                                                                                  // Build and push Docker image for the frontend
+                                                                                                  script{
+                                                                                                   sh 'docker build -t maher198/angular-app -f Dockerfile .'
+                                                                                                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                                                                                                    sh 'docker login -u maher198 -p ${dockerhubpwd}'
+                                                                                                    sh 'docker push maher198/angular-app'
+                                                                                                    }
+                                                                                             }
+                                                                                          }
+                                                                                        }
 
         stage('build') {
             steps {
@@ -63,6 +81,7 @@ stage('JUNit Reports') {
                                    }
                            }
                 }
+
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv(installationName:'Sonar') {
@@ -93,24 +112,7 @@ stage('JUNit Reports') {
                                                           }
 
 
-                                                       stage('Build & Push Frontend') {
-                                                                      agent any
-                                                                          steps {
-                                                                              git branch: 'master',
-                                                                                         url: 'https://github.com/MaherHamdi/DevOps_Front.git'
-                                                                                         sh 'npm install -g @angular/cli'
-                                                                                         sh 'npm install'
-                                                                                         sh 'ng build --configuration=production'
-                                                                                          // Build and push Docker image for the frontend
-                                                                                          script{
-                                                                                           sh 'docker build -t maher198/angular-app -f Dockerfile .'
-                                                                                            withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                                                                                            sh 'docker login -u maher198 -p ${dockerhubpwd}'
-                                                                                            sh 'docker push maher198/angular-app'
-                                                                                            }
-                                                                                     }
-                                                                                  }
-                                                                                }
+
                                                                                 }
 
 
