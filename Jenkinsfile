@@ -113,13 +113,13 @@ pipeline {
                         sh 'npm install'
                         sh 'ng build --configuration=production'
                         sh 'docker build -t maher198/angular-app -f Dockerfile .'
-                        
+
                     }
                 }
                 stage('Docker Login') {
                             steps {
                                 withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                                    sh "docker login -u maher198 -p ${dockerhubpwd}"
+                                    sh 'docker login -u maher198 -p ${dockerhubpwd}''
                                 }
                             }
                         }
