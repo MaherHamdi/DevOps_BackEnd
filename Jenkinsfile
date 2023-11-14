@@ -10,14 +10,7 @@ tools { nodejs '19.9.0'}
               url: 'https://github.com/MaherHamdi/DevOps_BackEnd.git'
             }
         }
-         stage('docker-compose  backend'){
-                             steps{
-                                 script{
-                                     sh 'docker compose up --build -d'
-                                         }
-                                         }
-                                      }
-
+        
         stage('build') {
             steps {
                 sh 'mvn package'
@@ -116,7 +109,13 @@ stage('JUNit Reports') {
                        }
                     }
                   }
-                   
+                   stage('docker-compose  backend'){
+                     steps{
+                         script{
+                             sh 'docker compose up --build -d'
+                                 }
+                                 }
+                              }
                           }
     post {
      success {
