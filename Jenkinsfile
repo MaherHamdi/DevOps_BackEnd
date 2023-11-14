@@ -91,8 +91,8 @@ stage('JUNit Reports') {
                                                              }
                                                              }
                                                           }
-                                                      }
-                                                      }
+
+
                                                        stage('Build & Push Frontend') {
                                                                       agent any
                                                                           steps {
@@ -111,7 +111,7 @@ stage('JUNit Reports') {
                                                                                      }
                                                                                   }
                                                                                 }
-                                                                                }
+
 
         /* stage('Push image to Hub'){
               steps{
