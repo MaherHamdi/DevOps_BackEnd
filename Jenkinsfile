@@ -11,13 +11,7 @@ pipeline {
                 url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
             }
         }
-        stage('Verify Docker-Compose File') {
-            steps {
-                script {
-                    sh 'ls -al /var/lib/jenkins/workspace/DevOps/docker-compose.yml'
-                }
-            }
-            }
+
 
 
 
@@ -131,8 +125,7 @@ pipeline {
         stage('docker-compose backend') {
                                                                  steps {
                                                                      script {
-                                                                     def currentPath = sh(script: 'pwd', returnStdout: true).trim()
-                                                                                             echo "Current Path (before docker-compose): ${currentPath}"
+                                                                     sh 'ls -al /var/lib/jenkins/workspace/DevOps/docker-compose.yml'
 
                                                                          sh "docker compose up -d"
                                                                      }
