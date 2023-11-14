@@ -11,6 +11,12 @@ pipeline {
                 url: 'https://github.com/MaherHamdi/DevOps_BackEnd'
             }
         }
+        stage('Verify Docker-Compose File') {
+            steps {
+                script {
+                    sh 'ls -al /var/lib/jenkins/workspace/DevOps/docker-compose.yml'
+                }
+            }
 
 
 
