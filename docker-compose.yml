@@ -2,7 +2,7 @@ version: "3"
 services:
   springboot-app:
     container_name: spring-boot-docker
-    image: olfajlali/spring-boot-docker:latest
+    image: maher198/spring-boot-docker:latest
     restart: unless-stopped
     ports:
       - "8082:8082"
@@ -22,7 +22,7 @@ services:
       MYSQL_DATABASE: devops
       MYSQL_ROOT_PASSWORD: root
   frontend:
-    image: olfajlali/angular-app:latest
+    image: maher198/angular-app:latest
     container_name: angular
     volumes: # Volume binding
       - './angulardockerproject:/usr/src/app'
