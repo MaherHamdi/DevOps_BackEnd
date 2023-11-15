@@ -11,6 +11,24 @@ pipeline {
               url: 'https://github.com/MaherHamdi/DevOps_BackEnd.git'
             }
         }
+                stage('build') {
+                    steps {
+                        sh 'mvn package'
+                    }
+                      post {
+                                  success {
+                                  emailext subject: 'Jenkins build Success',
+                                  body: 'The Jenkins build  has succeeded. Build URL: ${BUILD_URL}',
+                                   to: '$DEFAULT_RECIPIENTS'
+                                            }
+
+                                   failure {
+                                   emailext subject: 'Jenkins build Failure',
+                                   body: 'The Jenkins build has failed. Build URL: ${BUILD_URL}',
+                                   to: '$DEFAULT_RECIPIENTS'
+                                             }
+                                      }
+                }
         stage('Unit Tests') {
             steps {
                 script {
@@ -53,11 +71,7 @@ pipeline {
                 }
             }
         }
-        stage('build') {
-            steps {
-                sh 'mvn package'
-            }
-        }
+
         stage('Build docker image'){
             steps{
                 script{
@@ -100,6 +114,19 @@ pipeline {
             }
         }
     }
+    post {
+         success {
+          emailext subject: 'Jenkins build Success',
+          body: 'The Jenkins build  has succeeded. Build URL: ${BUILD_URL}',
+          to: '$DEFAULT_RECIPIENTS'
+           }
+
+           failure {
+           emailext subject: 'Jenkins build Failure',
+           body: 'The Jenkins build has failed. Build URL: ${BUILD_URL}',
+            to: '$DEFAULT_RECIPIENTS'
+                                }
+                            }
 
 
 }
