@@ -79,7 +79,7 @@ pipeline {
             agent any
             steps {
                 // Checkout the Angular frontend repository
-                git branch: 'main',
+                git branch: 'master',
                 url: 'https://github.com/MaherHamdi/DevOps_Front.git'
                 sh 'rm -rf node_modules'
                 sh 'npm install'
