@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout Backend Repo') {
             steps {
-              git branch: 'main',
+              git branch: 'master',
               url: 'https://github.com/MaherHamdi/DevOps_BackEnd.git'
             }
         }
