@@ -5,13 +5,13 @@ pipeline {
     tools { nodejs '19.9.0'}
 
     stages {
-        stage('Checkout Backend Repo') {
+        stage('GIT') {
             steps {
               git branch: 'master',
               url: 'https://github.com/MaherHamdi/DevOps_BackEnd.git'
             }
         }
-                stage('build') {
+                stage('Build BackEnd') {
                     steps {
                         sh 'mvn package'
                     }
@@ -29,7 +29,7 @@ pipeline {
                                              }
                                       }
                 }
-        stage('Unit Tests') {
+        stage('JUnit') {
             steps {
                 script {
                     sh 'mvn test'
@@ -55,7 +55,7 @@ pipeline {
 
              }
         }
-        stage('SonarQube Analysis') {
+        stage('SonarQube') {
             steps {
                 withSonarQubeEnv(installationName:'Sonar') {
                     sh 'chmod +x ./mvnw'
@@ -63,7 +63,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Nexus') {
+        stage('NEXUS') {
             steps {
                 script {
                     // Maven deploy to Nexus
@@ -72,24 +72,19 @@ pipeline {
             }
         }
 
-        stage('Build docker image'){
+        stage('Build & Push BackEnd Image'){
             steps{
                 script{
                     sh 'docker build -t maher198/spring-boot-docker .'
-                }
-            }
-        }
-        stage('Push beckend image to Hub'){
-            steps{
-                script{
                     withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockermdp')]) {
-                    sh 'docker login -u maher198 -p ${dockermdp}'
-                    }
-                    sh 'docker push maher198/spring-boot-docker'
+                                        sh 'docker login -u maher198 -p ${dockermdp}'
+                                        }
+                                        sh 'docker push maher198/spring-boot-docker'
                 }
             }
         }
-        stage('Build Frontend') {
+
+        stage('Build & Push Frontend Image') {
             agent any
             steps {
                 // Checkout the Angular frontend repository
