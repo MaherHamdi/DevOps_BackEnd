@@ -104,10 +104,17 @@ pipeline {
         stage('docker-compose full stack app'){
             steps{
                 script{
-                    sh 'docker compose up --build -d'
+                    sh 'docker compose -f docker-compose-app.yml up --build -d'
                 }
             }
         }
+            stage('Deploy Prometheus & Graphana'){
+                       steps{
+                           script{
+                               sh 'docker compose  -f docker-compose-prometheus.yml -f docker-compose-grafana.yml up --build -d'
+                                   }
+                                   }
+                                }
     }
     post {
          success {
